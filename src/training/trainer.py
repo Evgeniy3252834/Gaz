@@ -136,3 +136,5 @@ class ModelTrainer:
             raise ValueError("Model not trained yet")
         
         return self.model.model.predict([X_img, X_sensor])
+
+# TODO: implement cross-validation
