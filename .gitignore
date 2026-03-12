@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Данные (не хранитм в репозитории)
+data/
+!data/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+*.log
+
+# Config with secrets
+.env
+*.env
+
+# ML models
+*.h5
+*.joblib
+*.pkl

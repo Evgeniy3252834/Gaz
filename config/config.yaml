@@ -1,0 +1,35 @@
+# Параметры данных
+data:
+  csv_path: "data/sensor_data.csv"
+  images_dir: "data/thermal_images/"
+  image_size: [128, 128]
+  test_size: 0.2
+  random_state: 42
+  num_classes: 4
+  sensor_columns: ["MQ2", "MQ3", "MQ5", "MQ6", "MQ7", "MQ8", "MQ135"]
+  num_sensors: 7
+
+# Параметры модели
+model:
+  cnn_filters: [32, 64]
+  cnn_kernel_size: [3, 3]
+  dense_units: [64, 128]
+  dropout_rates: [0.3, 0.5]
+  activation: "relu"
+  output_activation: "softmax"
+
+# Параметры обучения
+training:
+  epochs: 50
+  batch_size: 32
+  validation_split: 0.2
+  patience: 10
+  optimizer: "adam"
+  loss: "categorical_crossentropy"
+  metrics: ["accuracy"]
+
+# Пути для сохранения
+persistence:
+  model_path: "models/mcnn_gas_model.h5"
+  scaler_path: "models/scaler.pkl"
+  encoder_path: "models/label_encoder.pkl"
