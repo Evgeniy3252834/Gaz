@@ -1,0 +1,39 @@
+{
+    "experiment_name": "20260312_221235",
+    "timestamp": "2026-03-12T22:12:36.827678",
+    "config": {
+        "model": "MCNN",
+        "epochs": 50,
+        "batch_size": 32,
+        "optimizer": "adam",
+        "sensors": [
+            "MQ2",
+            "MQ3",
+            "MQ5",
+            "MQ6",
+            "MQ7",
+            "MQ8",
+            "MQ135"
+        ],
+        "image_size": [
+            128,
+            128
+        ]
+    },
+    "metrics": {
+        "accuracy": 0.954,
+        "precision": 0.9543417590900644,
+        "recall": 0.954,
+        "f1_score": 0.9540557028271272,
+        "val_accuracy": 0.8238343189563127,
+        "val_loss": 0.3947883967036161,
+        "best_epoch": 27
+    },
+    "history_summary": {
+        "best_accuracy": 0.882700880110385,
+        "best_val_accuracy": 0.8259180296610832,
+        "best_loss": 0.25141246809412426,
+        "best_val_loss": 0.3947883967036161,
+        "epochs": 50
+    }
+}
