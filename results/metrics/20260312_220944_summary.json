@@ -1,0 +1,30 @@
+{
+    "experiment_name": "20260312_220944",
+    "timestamp": "2026-03-12T22:09:45.468915",
+    "config": {
+        "model": "MCNN",
+        "epochs": 50,
+        "batch_size": 32,
+        "optimizer": "adam",
+        "sensors": [
+            "MQ2",
+            "MQ3",
+            "MQ5",
+            "MQ6",
+            "MQ7",
+            "MQ8",
+            "MQ135"
+        ],
+        "image_size": [
+            128,
+            128
+        ]
+    },
+    "metrics": {
+        "accuracy": 0.95,
+        "precision": 0.950241293877929,
+        "recall": 0.95,
+        "f1_score": 0.9499569981183963,
+        "val_accuracy": 0.8093003767154264,
+        "val_loss": 0.41141148137288963,
+        "best_epoch": 

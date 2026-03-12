@@ -1,0 +1,12 @@
+Classification Report
+============================================================
+              precision    recall  f1-score   support
+
+       NoGas       0.93      0.96      0.95       127
+     Mixture       0.98      0.96      0.97       123
+     Perfume       0.95      0.96      0.95       134
+       Smoke       0.96      0.94      0.95       116
+
+    accuracy                           0.95       500
+   macro avg       0.95      0.95      0.95       500
+weighted avg       0.95      0.95      0.95       500
