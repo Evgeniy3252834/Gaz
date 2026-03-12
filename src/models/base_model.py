@@ -11,7 +11,7 @@ class BaseModel(ABC):
         self.config = config
         self.model: Optional[keras.Model] = None
         
-    @abstractmethod
+    @abstractmethod 
     def build(self) -> keras.Model:
         """Построить архитектуру модели"""
         pass
