@@ -33,3 +33,7 @@ persistence:
   model_path: "models/mcnn_gas_model.h5"
   scaler_path: "models/scaler.pkl"
   encoder_path: "models/label_encoder.pkl"
+
+# Training configuration
+epochs: 50
+batch_size: 32
