@@ -20,6 +20,8 @@ from src.training.callbacks import get_default_callbacks
 from src.evaluation.metrics import MetricsCalculator, ConfusionMatrixDisplay
 from src.evaluation.visualizer import TrainingVisualizer, PredictionVisualizer
 from src.persistence.model_saver import ModelSaver
+from src.persistence.results_manager import ResultsManager
+import datetime
 
 def load_config(config_path: str = 'config/config.yaml') -> dict:
     """Загрузить конфигурацию"""
@@ -121,10 +123,61 @@ def main():
     for key, value in metrics.items():
         print(f"   {key}: {value:.4f}")
     
-    # 9. Визуализируем
+    # 9. Сохраняем все результаты
+    print("\n💾 Saving all results...")
+    
+    # Создаём менеджер результатов
+    results_manager = ResultsManager()
+    
+    # Генерируем имя эксперимента (по времени)
+    experiment_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # Сохраняем конфиг
+    results_manager.save_experiment_summary(
+        config=config,
+        metrics=metrics,
+        history=history,
+        experiment_name=experiment_name
+    )
+    
+    # Сохраняем графики обучения
+    results_manager.save_training_plots(history, experiment_name)
+    
+    # Получаем предсказания для тестовой выборки
+    y_pred = trainer.predict(
+        split_data['X_sensor_test'],
+        split_data['X_img_test']
+    )
+    y_pred_classes = np.argmax(y_pred, axis=1)
+    y_true_classes = split_data['y_test']
+    
+    # Сохраняем предсказания
+    results_manager.save_predictions(
+        y_true_classes, 
+        y_pred_classes, 
+        class_names,
+        experiment_name
+    )
+    
+    # Сохраняем метрики отдельно
+    results_manager.save_metrics(metrics, experiment_name)
+    
+    # Сохраняем матрицу ошибок
+    cm = MetricsCalculator.confusion_matrix(y_true_classes, y_pred_classes)
+    results_manager.save_confusion_matrix(cm, class_names, experiment_name)
+    
+    # Сохраняем classification report
+    report = MetricsCalculator.classification_report(y_true_classes, y_pred_classes, class_names)
+    results_manager.save_classification_report(report, class_names, experiment_name)
+    
+    # 10. Визуализируем (опционально)
     print("\n📈 Visualizing...")
     visualizer = TrainingVisualizer()
     visualizer.plot_history(history)
+    
+    # Показываем матрицу ошибок
+    cm_display = ConfusionMatrixDisplay()
+    cm_display.plot(cm, class_names)
     
     # Матрица ошибок
     y_pred = trainer.predict(
