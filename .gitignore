@@ -33,3 +33,7 @@ data/
 *.h5
 *.joblib
 *.pkl
+
+# Результаты обучения (не храним в репозитории)
+results/
+!results/.gitkeep
