@@ -138,3 +138,8 @@ class ModelTrainer:
         return self.model.model.predict([X_img, X_sensor])
 
 # TODO: implement cross-validation
+
+
+def cross_validate():
+    '''TODO: implement cross-validation'''
+    pass
