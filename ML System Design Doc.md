@@ -99,46 +99,24 @@
 
 **Последовательность шагов:**
 
-ШАГ 1: Захват с дрона
-   ├── Газоанализатор → ppm + GPS (20 Гц)
-   ├── OGI-камера → IR-видео 30 fps
-   └── RGB-камера → RGB-видео 30 fps
-   ↓ Синхронизация по GPS
-
-ШАГ 2: Предобработка
-   ├── Газ: вычитание фона, фильтрация → ppm_scaled
-   ├── OGI: извлечение кадров, вычитание фона → thermal_frame (224×224×1)
-   └── RGB: ресайз, нормализация → rgb_frame (224×224×3)
-   ↓
-
-ШАГ 3: Feature Engineering
-   ├── Газ: скользящее среднее, разность с фоном → methane_features (N×3)
-   ├── OGI: thermal_tensor (batch,224,224,1)
-   └── RGB: rgb_tensor (batch,224,224,3)
-   ↓
-
-ШАГ 4: Обучение моделей
-   ├── Газ: порог ppm > 50 → p_methane (0/1)
-   ├── OGI: ResNet18 + sigmoid → p_thermal (0..1)
-   └── RGB: EfficientNetB0 + sigmoid → p_rgb (0..1)
-   ↓
-
-ШАГ 5: Decision Fusion
-   ├── Веса: газ=0.50, OGI=0.35, RGB=0.15
-   ├── Правило: если p_methane == 1 → p_leak = 0.99
-   └── Иначе: p_leak = взвешенная сумма
-   ↓
-
-ШАГ 6: Оценка на полигоне
-   ├── Критерии: Precision > 0.88, Recall > 0.92, FAR ≤ 1 на 100 км, локализация < 5 м
-   ├── Если НЕТ → возврат к ШАГУ 2
-   └── Если ДА → переход к ШАГУ 7
-   ↓
-
-ШАГ 7: Экспорт модели
-   ├── ONNX (CPU/GPU)
-   ├── TensorRT (Jetson Orin)
-   └── Пилотные полеты
+```mermaid
+flowchart TD
+    S1["<b>ШАГ 1: Захват с дрона</b><br/>Газоанализатор → ppm + GPS<br/>OGI-камера → IR-видео<br/>RGB-камера → RGB-видео"]
+    S1 --> SYNC["Синхронизация по GPS"]
+    
+    SYNC --> S2["<b>ШАГ 2: Предобработка</b><br/>Газ: вычитание фона → ppm_scaled<br/>OGI: извлечение кадров → thermal_frame<br/>RGB: ресайз → rgb_frame"]
+    
+    S2 --> S3["<b>ШАГ 3: Feature Engineering</b><br/>Газ: скользящее среднее → methane_features<br/>OGI: thermal_tensor<br/>RGB: rgb_tensor"]
+    
+    S3 --> S4["<b>ШАГ 4: Обучение</b><br/>Газ: порог ppm>50 → p_methane<br/>OGI: ResNet18 → p_thermal<br/>RGB: EfficientNetB0 → p_rgb"]
+    
+    S4 --> S5["<b>ШАГ 5: Decision Fusion</b><br/>Веса: газ=0.5, OGI=0.35, RGB=0.15<br/>Правило: если p_methane=1 → p_leak=0.99"]
+    
+    S5 --> S6{"<b>ШАГ 6: Оценка</b><br/>Precision>0.88? Recall>0.92?<br/>FAR≤1/100км? Локализация<5м?"}
+    
+    S6 -->|НЕТ| S2
+    S6 -->|ДА| S7["<b>ШАГ 7: Экспорт</b><br/>ONNX → TensorRT → Пилотные полеты"]
+```
 
 
 ---
